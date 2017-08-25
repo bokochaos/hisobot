@@ -401,7 +401,11 @@ client.on('message', message => {
 		case "annoyed":
 			message.channel.send( "Heh, I'm ignoring you" );
 			break;
-		
+
+		case "arachnobot":
+			message.channel.send("https://media.discordapp.net/attachments/231689935910993920/350073029033852929/image.jpg?width=226&height=301")
+			break;
+	    
 		case undefined:
 			//Cases where it isn't a command message
 			//Ignore as if it wasn't a relevant message
