@@ -1,6 +1,6 @@
 /*
  * Created:				  01 Aug 2017
- * Last updated:		21 Sept 2017
+ * Last updated:		20 May 2018
  * Developer(s):		CodedLotus
  * Description:			Return a Discord.JS Collection object with pairs for names
  * Version #:			1.1.0
@@ -8,6 +8,7 @@
 		1.0.0: "Constant" list of names used until live database is built
 		1.0.1: TBF role added as assignable
     1.1.0: Added voidRoleStrings as a central management for voided roles. Turned the export into a JSO for Hisobot management.
+    1.1.1: Added TB1 Coop role to new role adds, added other roles to unassignables
 		
  */
 
@@ -18,7 +19,7 @@
  * @type {Collection<string,string>}
  */
 var roleNames = new Map();
-const roleStrings = ["Terra Battle", "Terra Battle 2", "Terra Wars", "Veteran", "TBF", "TB2 Co-op"];
+const roleStrings = ["Terra Battle", "Terra Battle 2", "Terra Wars", "Veteran", "TBF", "TB2 Co-op", "TB Co-op"];
 
 roleNames.set("terra battle", roleStrings[0]);
 roleNames.set("terra battle 1", roleStrings[0]);
@@ -39,12 +40,17 @@ roleNames.set("tbf", roleStrings[4]);
 roleNames.set("forum", roleStrings[4]);
 
 roleNames.set("tb2 coop", roleStrings[5]);
-roleNames.set("coop", roleStrings[5]);
+roleNames.set("coop2", roleStrings[5]);
 roleNames.set("tb2 co-op", roleStrings[5]);
 
+roleNames.set("tb coop", roleStrings[6]);
+roleNames.set("tb1 co-op", roleStrings[6]);
+roleNames.set("coop1", roleStrings[6]);
 
 
-const voidRoleStrings = ["administrator", "moderator", "companion", "rydia", "pvp", "content", "wiki", "metal", "bot", "dyno" ];
+
+
+const voidRoleStrings = ["administrator", "moderator", "companion", "rydia", "pvp", "content", "wiki", "metal", "bot", "dyno", "endgame", "mist", "data", "content" ];
 
 
 module.exports = {openRoles: roleNames, voidRoles: voidRoleStrings };

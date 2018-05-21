@@ -1,9 +1,9 @@
 /*
  * Created:				  02 Jan 2018
- * Last updated:		17 Mar 2018
+ * Last updated:		20 May 2018
  * Developer(s):		CodedLotus
  * Description:			Core details and functions of Hisobot
- * Version #:			  2.0.0
+ * Version #:			  2.1.1
  * Version Details:
 		0.0.0: Core code came from Nazuna Bot
 		0.0.1: variable string storing bot token changed to constant
@@ -23,6 +23,7 @@
     1.1.1: Changed some requires in accord with their module export changes.
     2.0.0: Changed core API to Discord.JS-Commando
     2.1.0: Added JS String templating (included with the TBxRoll add, tb1dq add, Interval bug fix as  2.1.0)
+    2.1.1: Fix added to on(error) to reinitialize bot alerts. Other minor things changed.
  * fork sourcecode:		https://github.com/danielmilian90/Nazuna
  * loaned code:       https://dragonfire535.gitbooks.io/discord-js-commando-beginners-guide/content/making-your-first-command.html
  */
@@ -141,6 +142,7 @@ class HisoBot extends Commando.CommandoClient{
 }
 
 /*** Start of the Easter Egg messages ***/
+//TODO: Make these regex tests or something at some point. Its getting sad...
 const thankYou     = [ "thank you", "thanks"],
         sorry        = [ "sorry", "im sorry", "i'm sorry"],
         praiseYamcha = [ "praiseyamcha", "praise yamcha"],
@@ -184,9 +186,24 @@ function SorryHisobot(message, msgContentLower){
 
 /*** End of the Easter Egg messages ***/
 
+//Clears and (re)establishes the alerts for the bot
+function alertsManagement(client, MZSchedule, DQSchedule){
+  console.log("Time is: " + new Date());
+  console.log("Clearing out timeouts and intervals");
+  for (const t of client._timeouts) clearTimeout(t);
+  for (const i of client._intervals) clearInterval(i);
+  client._timeouts.clear();
+  client._intervals.clear();
+  //alert that the bot is online
+  
+  let now = new Date(), nextMinute = new Date();
+  nextMinute.setMilliseconds(0); nextMinute.setSeconds(0); nextMinute.setMinutes(nextMinute.getMinutes() +1);
+  client.setTimeout(alertSetup, nextMinute-now, client, MZSchedule, DQSchedule );
+}
+
 //Establishes the alert system for HisoBot
 //14 Sept 2017: I don't know how to nest Discord Client functions within one another to make it work yet
-function alerts(client, MZSchedule, DQSchedule){
+function alertSetup(client, MZSchedule, DQSchedule){
   IntervalAlerts(client, MZSchedule, DQSchedule); //call at the start of the first minute
   try {
     client.setInterval(IntervalAlerts, 1000*60, client, MZSchedule, DQSchedule);
@@ -223,7 +240,7 @@ client.on('ready', () => {
   //commands.onStart(client);
   console.log("Hisobot2 online!");
   //Clear client's timeouts and intervals to prevent repeat spamming of alerts
-  console.log("Time is: " + new Date());
+  /*console.log("Time is: " + new Date());
   console.log("Clearing out timeouts and intervals");
   for (const t of client._timeouts) clearTimeout(t);
   for (const i of client._intervals) clearInterval(i);
@@ -233,8 +250,10 @@ client.on('ready', () => {
   
   let now = new Date(), nextMinute = new Date();
   nextMinute.setMilliseconds(0); nextMinute.setSeconds(0); nextMinute.setMinutes(nextMinute.getMinutes() +1);
-  client.setTimeout(alerts, nextMinute-now, client, MZSchedule, DQSchedule );
+  client.setTimeout(alertSetup, nextMinute-now, client, MZSchedule, DQSchedule );*/
   //alerts(client, MZSchedule, DQSchedule);
+  
+  alertsManagement(client, MZSchedule, DQSchedule);
   
   //Set up the Mongoose client
   //client.db = mongoose.connect(client.mongooseDB);
@@ -311,16 +330,17 @@ client.on('message', message => {
 });
 
 client.on('error', error => {
-  console.log('WebSocket error @ ' + new Date());
+  console.log(`WebSocket error @ ${new Date()}`);
   console.log(error);
-  client.destroy();
-  setTimeout(() => { client.login( SETUP.token ); }, 5000); 
+  //client.destroy();
+  //setTimeout(() => { client.login( SETUP.token ); }, 5000); 
   //client.login( SETUP.token );
+  alertsManagement(client, MZSchedule, DQSchedule);
 });
 
 client.on('disconnect', event => {
-  console.log('Disconnect code: ' + event.code);
-  console.log('reason: ' + event.reason);
+  console.log(`'Disconnect code: ${event.code}
+reason: ${event.reason}`);
   client.destroy();
 });
 

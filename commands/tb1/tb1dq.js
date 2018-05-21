@@ -42,7 +42,7 @@ module.exports = class TB1DailyQuestCommand extends Command {
                     type: 'integer',
                     default: '',
                     min: 1,
-                    max: 7
+                    max: 14
                 }
             ]
         });

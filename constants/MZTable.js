@@ -1,9 +1,9 @@
 /**
  * Created:				  11 Aug 2017
- * Last updated:		20 Jan 2018
+ * Last updated:		20 May 2018
  * Developer(s):		CodedLotus
  * Description:			Returns details of the TB1 Metal Zone. Initial Function code came from crape.org/tools/terra-battle/mz.html
- * Version #:			  1.4.2
+ * Version #:			  1.4.3
  * Version Details:
 		0.0.0: File created from cloning token.js file
 		1.0.0: Basic on-the-hour MZ schedule available
@@ -16,7 +16,8 @@
     1.3.2: Replaced some manual time calculations with class constants.
     1.4.0: Cleaned up some documentation/comments + Stamina Recharge integration on MZ info returns; added MZTimeResources
     1.4.1: Added the regular "0:" days to AHTK times (as per Azure's suggestion) 
-    1.4.2: Regularized "D:HH:MM" time formats between both schedule types (mass suggestion integration) 
+    1.4.2: Regularized "D:HH:MM" time formats between both schedule types (mass suggestion integration)
+    1.4.3: Added and used _MIN_ZONE (because good coding practices or something)
  * Functional sourcecode:	https://crape.org/tools/terra-battle/mz.html
  */
 
@@ -35,7 +36,8 @@ class MZTable {
 		this._STAT_OPEN  = 1;
 		this._STAT_OPEN1 = 2;
 		this._STAT_KING  = 3;
-		this._MAX_ZONE = 7;
+		this._MIN_ZONE = 1;
+    this._MAX_ZONE = 7;
 		
     /**
 		 * Class constants pertaining to time calculations.
@@ -202,13 +204,13 @@ class MZTable {
 	 */
 	getOpenZones(date){
 		var openZones = [];
-		for (var zone = 1; zone <= this._MAX_ZONE; ++zone) {
+		for (var zone = this._MIN_ZONE; zone <= this._MAX_ZONE; ++zone) {
 		  var state = this._getTimetableState(date, zone);
 		  //openZones.push(state);
 
 		  if (state == this._STAT_OPEN
 			  || state == this._STAT_KING
-			  || (zone == 1 && state == this._STAT_OPEN1)) {
+			  || (zone == this._MIN_ZONE && state == this._STAT_OPEN1)) {
 
 			openZones[zone-1] = state;
 		  } else { openZones.push(this._STAT_CLOSE); }
@@ -241,7 +243,7 @@ class MZTable {
 		do {
 			var openNow = this.getOpenZones(movingDate);
 			//Iterate all zones fetched
-			for( var zone = 0; zone < this._MAX_ZONE; ++zone ){
+			for( var zone = this._MIN_ZONE-1; zone < this._MAX_ZONE; ++zone ){
 				//NOTE: Ignore cases where openNow == 2 
 				//Skip case where openNow == 2 to ignore "current" MZ1 running
 				if( openNow[zone] == this._STAT_OPEN1 ){ continue; }

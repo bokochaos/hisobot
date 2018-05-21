@@ -1,6 +1,6 @@
 /*
  * Created:				  13 Sept 2017
- * Last updated:		20 Jan 2018
+ * Last updated:		27 Apr 2018
  * Developer(s):		CodedLotus
  * Description:			Returns the interval function for the bot
  * Version #:			  1.1.3
@@ -45,7 +45,7 @@ function TBmidHourAlerts(time, client, DQSchedule, MZSchedule){
     //const CRITICAL_DQ_STRING = "Hey ya hermits! Get out of your closet forests because " + tLeftInDQ.quest + " is up now!";
     const CRITICAL_DQ_EMBED = new RichEmbed()
             .setTitle("DAILY QUEST UPDATE!!!")
-    .addField("Hey ya hermits!",`Get out of your closet forests because ${tLeftInDQ.quest} is closing now!`)
+    .addField("Hey ya hermits!",`Get out of your pocket forests because ${tLeftInDQ.quest} is closing now!`)
             .addField("Time left", `${MIN_LEFT} min`)
             .setColor([255, 0, 0])
             .setFooter("Thanks SethCypher#2016!", "https://cdn.discordapp.com/attachments/360906433438547978/399164651264409602/Terra_Battle_FFVIII.jpg")
