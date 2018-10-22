@@ -1,9 +1,9 @@
 /*
  * Created:				  02 Jan 2018
- * Last updated:		20 May 2018
+ * Last updated:		21 Oct 2018
  * Developer(s):		CodedLotus
  * Description:			Core details and functions of Hisobot
- * Version #:			  2.1.1
+ * Version #:			  2.1.2
  * Version Details:
 		0.0.0: Core code came from Nazuna Bot
 		0.0.1: variable string storing bot token changed to constant
@@ -24,6 +24,7 @@
     2.0.0: Changed core API to Discord.JS-Commando
     2.1.0: Added JS String templating (included with the TBxRoll add, tb1dq add, Interval bug fix as  2.1.0)
     2.1.1: Fix added to on(error) to reinitialize bot alerts. Other minor things changed.
+    2.1.2: Disabled TB2 roles (RIP TB2) and TB1 alerts in response to 5.5.x changes to MZ, Daily Quests. Alerts resuming TBA.
  * fork sourcecode:		https://github.com/danielmilian90/Nazuna
  * loaned code:       https://dragonfire535.gitbooks.io/discord-js-commando-beginners-guide/content/making-your-first-command.html
  */
@@ -117,7 +118,7 @@ class HisoBot extends Commando.CommandoClient{
         : msgContentLower.slice("thanks".length).trim() );
       
       if( this.hisoNames.includes( msgContentLower ) ){
-        const goodjob = this.emojis.find("name", "goodjob"), love = this.emojis.find("name", "love");
+        const goodjob = this.emojis.find("name", "hiso_goodjob"), love = this.emojis.find("name", "hiso_love");
         message.react(goodjob); message.react(love);
       }
     }
@@ -132,7 +133,7 @@ class HisoBot extends Commando.CommandoClient{
             : msgContentLower.slice("i'm sorry".length).trim() ) );
       
       if( this.hisoNames.includes( msgContentLower ) ){
-        const love = this.emojis.find("name", "love");
+        const love = this.emojis.find("name", "hiso_love");
         message.react(love);
       }
     }
@@ -163,7 +164,7 @@ function ThanksHisobot(message, msgContentLower) {
       : msgContentLower.slice("thanks".length).trim() );
     
     if( hisoNames.includes( msgContentLower ) ){
-      const goodjob = client.emojis.find("name", "goodjob"), love = client.emojis.find("name", "love");
+      const goodjob = client.emojis.find("name", "hiso_goodjob"), love = client.emojis.find("name", "hiso_love");
       message.react(goodjob); message.react(love);
     }
   }
@@ -178,7 +179,7 @@ function SorryHisobot(message, msgContentLower){
           : msgContentLower.slice("i'm sorry".length).trim() ) );
     
     if( hisoNames.includes( msgContentLower ) ){
-      const love = client.emojis.find("name", "love");
+      const love = client.emojis.find("name", "hiso_love");
       message.react(love);
     }
   }
@@ -187,6 +188,7 @@ function SorryHisobot(message, msgContentLower){
 /*** End of the Easter Egg messages ***/
 
 //Clears and (re)establishes the alerts for the bot
+//TODO: Update code for 5.5.x schedule changes
 function alertsManagement(client, MZSchedule, DQSchedule){
   console.log("Time is: " + new Date());
   console.log("Clearing out timeouts and intervals");
@@ -253,7 +255,8 @@ client.on('ready', () => {
   client.setTimeout(alertSetup, nextMinute-now, client, MZSchedule, DQSchedule );*/
   //alerts(client, MZSchedule, DQSchedule);
   
-  alertsManagement(client, MZSchedule, DQSchedule);
+  //TODO: Change the alerts stuff for 5.5.x
+  //alertsManagement(client, MZSchedule, DQSchedule);
   
   //Set up the Mongoose client
   //client.db = mongoose.connect(client.mongooseDB);
@@ -335,7 +338,9 @@ client.on('error', error => {
   //client.destroy();
   //setTimeout(() => { client.login( SETUP.token ); }, 5000); 
   //client.login( SETUP.token );
-  alertsManagement(client, MZSchedule, DQSchedule);
+  
+  //TODO: Change the alerts stuff for 5.5.x
+  //alertsManagement(client, MZSchedule, DQSchedule);
 });
 
 client.on('disconnect', event => {
